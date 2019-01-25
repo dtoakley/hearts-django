@@ -1,56 +1,36 @@
 
-# Hearts -- A creative brainstorming app
+Build Hearts Django App
 
-Hearts is an Avaaz project that makes it simple and easy for teams to share ideas and vote of them! It's a Django 
-project with a create-react-app client (hearts-client).
-
-## Requirements
-
-* [Docker Engine](https://store.docker.com/editions/community/docker-ce-desktop-mac) (Tested with docker v17.12.0-ce)
-* git - (to check out this project!)
-
-## To build
-
-```bash
-$ cd <AVAAZ_HOME>
-$ git clone ssh://git@git.avaaz.org:7999/developers/hearts-django.git
-$ cd hearts-django
+```
+$ ./build-local-hearts.sh
 ```
 
-Copy `local-dev-config.sh.dist` to `local-dev-config.sh` and edit for your own settings. See local-dev-config.sh.dist for a description of each setting.
-
-Build everything. This takes much longer the first time as the image layers are pulled down:
-
-```bash
-$ ./build-all.sh
+Build Hearts Node Client
+```
+$ ./build-local-hearts-client.sh
 ```
 
-## To run
-
-Start everything:
-
-```bash
-$ ./start-all.sh
+Run Hearts app and services together..
+```
+$ docker-compose up
 ```
 
-Hearts App is now available at localhost:3000 and you can login with the superuser credentials:
-username: admin
-password: abcd1234
-
-#Logs 
-
-You can check Hearts app logs with...
+Or run Hearts app and client in separate terminal windows..
 ```
-$ docker logs --follow local-dev-hearts
+$ docker-compose up web
+# open new terminal window
+$ docker-compose up node
+
 ```
 
-And the check Hearts node client logs with...
+Check Hearts app logs with...
 ```
-$ docker logs --follow local-dev-node
+$ docker logs --follow web
 ```
 
-## To list the running containers
-
-```bash
-$ docker container ls
+Check Hearts node client logs with...
 ```
+$ docker logs --follow node
+```
+
+

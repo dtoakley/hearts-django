@@ -1,12 +1,13 @@
-from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from rest_framework import viewsets, response, permissions
+from rest_framework.generics import (CreateAPIView, GenericAPIView,
+                                     ListCreateAPIView, RetrieveUpdateDestroyAPIView)
 
-from rest_framework import permissions, response, viewsets
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from .serializers import DocumentSerializer, ContentSerializer
+from hearts_core.models import Document, Content
+from django.contrib.auth.models import User
 
-from hearts_core.models import Content, Document
-
-from .serializers import ContentSerializer, DocumentSerializer, UserSerializer
+from .serializers import UserSerializer
 
 
 class DocumentListView(ListCreateAPIView):

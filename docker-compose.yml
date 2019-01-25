@@ -20,8 +20,6 @@ services:
     command: npm start
   web:
     build: .
-    # migrate and create_initial_superuser are here so that they are run inside the container that has access to the db
-    # TODO - move migrate and create_initial_superuser to build-local-hearts.sh.
     command: bash -c "source virtualenv/bin/activate && python manage.py migrate &&
                       python manage.py create_initial_superuser && python manage.py runserver 0.0.0.0:8000"
     volumes:

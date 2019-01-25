@@ -2,7 +2,7 @@
   "name": "hearts-client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://local-dev-hearts:8000/",
+  "proxy": "http://web:8000/",
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.2",
     "@fortawesome/fontawesome-free-solid": "^5.0.4",

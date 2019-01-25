@@ -15,6 +15,7 @@ import sys
 
 from django.utils.six.moves import configparser
 
+
 config = configparser.SafeConfigParser(allow_no_value=True, interpolation=None)
 config.read(os.getenv('HEARTS_ENV_CONFIG_FILE'))
 
@@ -45,6 +46,7 @@ ALLOWED_HOSTS = config.get('general', 'allowed_hosts').split(',')
 INSTALLED_APPS = [
     'api',
     'hearts_core',
+    'channels',
     'rest_framework',
     'rest_framework.authtoken',
     'ckeditor',
@@ -54,7 +56,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'channels',
 ]
 
 MIDDLEWARE = [
@@ -90,8 +91,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hearts.wsgi.application'
 
-ASGI_APPLICATION = 'hearts.routing.application'
-
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 
@@ -103,11 +102,12 @@ REST_FRAMEWORK = {
 }
 
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [(config.get('redis', 'url'), 6379)],
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [config.get('redis', 'url')],
         },
+        "ROUTING": "hearts_core.routing.channel_routing",
     },
 }
 
@@ -186,3 +186,4 @@ STATIC_ROOT = config.get('general', 'static_root')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'hearts', 'static'),
 ]
+

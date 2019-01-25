@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User
-
 from rest_framework import serializers
 
-from hearts_core.models import Content, Document, Vote
+from hearts_core.models import Document, Content, Vote
 
 
 class DocumentSerializer(serializers.ModelSerializer):

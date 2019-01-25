@@ -1,17 +1,21 @@
 #!/bin/bash
-set -e
+#!/usr/bin/env python3
 
-pip3.6 install virtualenv
-virtualenv virtualenv
+virtualenv -p python3.6 virtualenv
 
-source virtualenv/bin/activate
-export HEARTS_ENV_CONFIG_FILE="local_dev_env_config.ini"
+source ./virtualenv/bin/activate
 
 echo "Installing python requirements"
-pip3.6 install -r requirements.txt
+pip install -r requirements.txt
 
-echo "migrating models"
+export HEARTS_ENV_CONFIG_FILE="local_dev_env_config.ini"
+
+echo "Migrating models"
 python manage.py migrate
 
-echo "Creating superuser"
+echo "Creating initial superuser"
 python manage.py create_initial_superuser
+
+
+
+

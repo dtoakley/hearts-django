@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from hearts_core.models import Content, Document, Vote
+from hearts_core.models import Document, Content, Vote
 
 
 class ContentInLine(admin.TabularInline):
