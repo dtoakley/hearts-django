@@ -1,0 +1,18 @@
+.ContentFrom {
+    border: 1px #ccc solid;
+    border-radius: 3px;
+    min-height: 40px;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.ContentFrom, .content-form-button {
+    outline: none;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+
+}
+
+.content-form-wrapper {
+    padding: 20px;
+}

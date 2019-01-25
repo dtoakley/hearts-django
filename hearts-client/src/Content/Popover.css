@@ -1,0 +1,30 @@
+.custom-actions {
+    margin-top: -46px;
+}
+
+.popover {
+    width: 120px;
+}
+
+.popover-actions {
+    padding: 10px;
+}
+
+.popover-actions .text-muted {
+    padding: 5px;
+    border-radius: 2px;
+}
+
+.popover-actions .text-muted.voted-on {
+    color: #d27 !important;
+}
+
+.popover-actions .text-muted:hover {
+    background: #eee;
+    cursor:pointer;
+}
+
+.fa-heart {
+    margin-right: 5px;
+}
+

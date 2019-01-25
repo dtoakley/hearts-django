@@ -1,0 +1,17 @@
+
+.DocumentContainerFluid {
+    padding: 60px;
+    background: #eee;
+}
+
+.DocumentContainer {
+    background-color: #fff;
+    padding-top: 15px;
+    max-width: 960px !important;
+    min-height: 960px;
+    margin-bottom: 40px;
+}
+
+.DocumentHead h1 {
+    margin-left: 20px;
+}

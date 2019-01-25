@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    # TODO - import these secrets from the config .ini file
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=abcd1234
+      - POSTGRES_DB=hearts
+  redis:
+    image: "redis:4.0"
+  node:
+    image: "node:6.11"
+    working_dir: /hearts-client
+    volumes:
+      - ./hearts-client:/hearts-client
+    ports:
+      - "3000:3000"
+    command: npm start
+  web:
+    build: .
+    # migrate and create_initial_superuser are here so that they are run inside the container that has access to the db
+    # TODO - move migrate and create_initial_superuser to build-local-hearts.sh.
+    command: bash -c "source virtualenv/bin/activate && python manage.py migrate &&
+                      python manage.py create_initial_superuser && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/srv/www
+    ports:
+      - "8000:8000"
+    environment:
+      - HEARTS_ENV_CONFIG_FILE=local_dev_env_config.ini
+      - WERKZEUG_DEBUG_PIN=off
+    depends_on:
+      - db
+      - redis
+      - node

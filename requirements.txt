@@ -1,0 +1,16 @@
+asgi-redis==1.4.3
+asgiref==2.1.5
+channels_redis==2.1.0
+channels==2.0.2
+Django==1.11.15
+django-ckeditor==5.4.0
+django-debug-toolbar==1.9.1
+djangorestframework==3.7.7
+isort==4.3.4
+psycopg2==2.7.3.2
+pytest==3.4.0
+pytest-cov==2.5.1
+pytest-asyncio==0.8.0
+pytest-django==3.1.2
+six==1.11.0
+tox==2.7.0
