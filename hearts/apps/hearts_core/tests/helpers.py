@@ -1,5 +1,4 @@
 import datetime
-
 from django.utils import timezone
 
 from hearts_core.models import Document

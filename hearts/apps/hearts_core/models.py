@@ -1,8 +1,9 @@
 import datetime
 
+from django.db.models import Model, ForeignKey, DateTimeField, TextField, CharField, IntegerField, CASCADE
 from django.contrib.auth.models import User
-from django.db.models import CASCADE, CharField, DateTimeField, ForeignKey, Model
 from django.utils import timezone
+from django.utils.timesince import timesince
 
 from ckeditor.fields import RichTextField
 
