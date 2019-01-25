@@ -1,7 +1,7 @@
 import React from 'react';
 import {Popover, PopoverHeader} from 'reactstrap';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import faHeart from '@fortawesome/fontawesome-free-solid/faHeart';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 import './Popover.css';
 
