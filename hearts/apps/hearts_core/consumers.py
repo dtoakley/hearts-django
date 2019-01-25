@@ -1,7 +1,5 @@
 import json
 from logging import getLogger
-from channels import Group
-from channels.auth import channel_session_user, channel_session_user_from_http
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
@@ -12,7 +10,6 @@ from hearts_core.constants import MessageTypes
 logger = getLogger(__name__)
 
 
-@channel_session_user_from_http
 def ws_connect(message):
     try:
         prefix, document_id = message['path'].strip('/').split('/')
@@ -29,7 +26,6 @@ def ws_connect(message):
     message.channel_session['document_id'] = str(doc.id)
 
 
-@channel_session_user
 def ws_receive(message):
     try:
         document_id = message.channel_session.get('document_id')
@@ -87,7 +83,6 @@ def ws_receive(message):
     Group('document-' + document_id).send({'text': json.dumps(content.as_dict())})
 
 
-@channel_session_user
 def ws_disconnect(message):
     document_id = message.channel_session['document_id']
     Group('document-' + document_id).discard(message.reply_channel)

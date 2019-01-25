@@ -23,6 +23,6 @@ coverage.xml
 
 # Environments
 venv/
-virtualenv
+virtualenv/
 local-dev-config.sh
 .vscode/
