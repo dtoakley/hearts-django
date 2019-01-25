@@ -1,8 +1,7 @@
 import React from 'react';
-
 import {UncontrolledTooltip} from 'reactstrap';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import faHeart from '@fortawesome/fontawesome-free-solid/faHeart';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
 
 
 const Vote = ({vote}) => {

@@ -9,9 +9,9 @@ services:
       - POSTGRES_PASSWORD=abcd1234
       - POSTGRES_DB=hearts
   redis:
-    image: "redis:4.0"
+    image: "redis:5.0.3"
   node:
-    image: "node:6.11"
+    image: "node:8.15"
     working_dir: /hearts-client
     volumes:
       - ./hearts-client:/hearts-client

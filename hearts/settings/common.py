@@ -44,9 +44,9 @@ ALLOWED_HOSTS = config.get('general', 'allowed_hosts').split(',')
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'api',
     'hearts_core',
-    'channels',
     'rest_framework',
     'rest_framework.authtoken',
     'ckeditor',
@@ -101,13 +101,14 @@ REST_FRAMEWORK = {
     )
 }
 
+ASGI_APPLICATION = 'hearts_core.routing.application'
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "asgi_redis.RedisChannelLayer",
         "CONFIG": {
             "hosts": [config.get('redis', 'url')],
-        },
-        "ROUTING": "hearts_core.routing.channel_routing",
+        }
     },
 }
 
