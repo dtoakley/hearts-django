@@ -41,7 +41,6 @@ class EchoConsumer(WebsocketConsumer):
 
             if text_data_json.get('contentId'):
                 content = get_object_or_404(Content, pk=text_data_json.get('contentId'))
-
                 user_already_voted_on_content = content.user_already_voted(user)
             else:
                 content = None
@@ -53,6 +52,14 @@ class EchoConsumer(WebsocketConsumer):
             elif action == MessageTypes.EDIT_CONTENT:
                 content.text = content_text
                 content.save()
+
+            elif action == MessageTypes.REMOVE_CONTENT:
+                content.delete()
+                response = {
+                    'contentDeletedId': content.id
+                }
+                self.send_response_message_to_group(response)
+                return
 
             elif action == MessageTypes.REMOVE_VOTE and user_already_voted_on_content:
                 content.votes.get(content=content, author=user).delete()
@@ -69,12 +76,14 @@ class EchoConsumer(WebsocketConsumer):
             logger.debug('Unable to error process the websocket message: ', str(error))
             return
 
-        # Send message to room group
+        self.send_response_message_to_group(content.as_dict())
+
+    def send_response_message_to_group(self, response_message):
         async_to_sync(self.channel_layer.group_send)(
             self.document_group_name,
             {
                 'type': 'hearts_reply',
-                'message': content.as_dict()
+                'message': response_message
             }
         )
 
@@ -92,4 +101,3 @@ class EchoConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-
