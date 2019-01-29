@@ -20,7 +20,7 @@ class Document extends Component {
         this.client = new Client();
         this.websocket = this.client.connectWebSocket();
         this.onWebsocketMessage = this.onWebsocketMessage.bind(this);
-        this.websocket.listen(this.onWebsocketMessage);
+        this.websocket.onmessage = this.onWebsocketMessage;
         this.sendWebsocketMessage = this.sendWebsocketMessage.bind(this);
     }
 
@@ -54,17 +54,20 @@ class Document extends Component {
 
     sendWebsocketMessage(message) {
         message.user = this.state.user;
-        this.websocket.send(message);
+        this.websocket.send(
+            JSON.stringify(message)
+        );
     }
 
-    onWebsocketMessage(contentMessage) {
+    onWebsocketMessage(message) {
+        let messageData = JSON.parse(message.data).text;
         let contents = this.state.contents;
         let newContent = true;
 
-        if (contentMessage.contentDeletedId) {
+        if (messageData.contentDeletedId) {
             newContent = false;
             for(let i = 0; i < contents.length; i++) {
-                if(contents[i].id === parseInt(contentMessage.contentDeletedId, 10)) {
+                if(contents[i].id === parseInt(messageData.contentDeletedId, 10)) {
                     contents.splice(i, 1);
                     break;
                 }
@@ -72,15 +75,15 @@ class Document extends Component {
         }
 
         contents.forEach(function(content) {
-            if (content.id === contentMessage.id) {
+            if (content.id === messageData.id) {
                 let index = contents.indexOf(content);
-                contents[index] = contentMessage;
+                contents[index] = messageData;
                 newContent = false;
             }
         });
 
         if (newContent) {
-            contents.push(contentMessage);
+            contents.push(messageData);
         }
 
         this.setState({
