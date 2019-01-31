@@ -1,9 +1,8 @@
 import json
 from logging import getLogger
-from asgiref.sync import async_to_sync
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 from hearts_core.models import Document, Content, Vote
 from hearts_core.constants import MessageTypes
@@ -11,20 +10,19 @@ from hearts_core.constants import MessageTypes
 logger = getLogger(__name__)
 
 
-class EchoConsumer(WebsocketConsumer):
+class EchoConsumer(AsyncWebsocketConsumer):
 
-    def connect(self):
+    async def connect(self):
         self.document_id = self.scope['url_route']['kwargs']['document_id']
         self.document_group_name = 'document_{}'.format(self.document_id)
 
-        async_to_sync(self.channel_layer.group_add)(
+        await self.channel_layer.group_add(
             self.document_group_name,
             self.channel_name
         )
+        await self.accept()
 
-        self.accept()
-
-    def receive(self, text_data):
+    async def receive(self, text_data):
         try:
             text_data_json = json.loads(text_data)
             document = get_object_or_404(Document, pk=self.document_id)
@@ -56,7 +54,7 @@ class EchoConsumer(WebsocketConsumer):
                     'contentDeletedId': content.id
                 }
                 content.delete()
-                self.send_response_message_to_group(response)
+                await self.send_response_message_to_group(response)
                 return
 
             elif action == MessageTypes.REMOVE_VOTE and user_already_voted_on_content:
@@ -74,10 +72,10 @@ class EchoConsumer(WebsocketConsumer):
             logger.debug('Unable to error process the websocket message: ', str(error))
             return
 
-        self.send_response_message_to_group(content.as_dict())
+        await self.send_response_message_to_group(content.as_dict())
 
-    def send_response_message_to_group(self, response_message):
-        async_to_sync(self.channel_layer.group_send)(
+    async def send_response_message_to_group(self, response_message):
+        await self.channel_layer.group_send(
             self.document_group_name,
             {
                 'type': 'hearts_reply',
@@ -85,17 +83,17 @@ class EchoConsumer(WebsocketConsumer):
             }
         )
 
-    def hearts_reply(self, event):
+    async def hearts_reply(self, event):
         message = event.get('message')
 
         # Send message to WebSocket
-        self.send(text_data=json.dumps({
+        await self.send(text_data=json.dumps({
             'text': message
         }))
 
-    def disconnect(self, close_code):
+    async def disconnect(self, close_code):
         # Leave room group
-        async_to_sync(self.channel_layer.group_discard)(
+        await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
         )
