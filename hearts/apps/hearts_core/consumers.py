@@ -33,7 +33,6 @@ class EchoConsumer(WebsocketConsumer):
             return
 
         try:
-            print(text_data_json)
             user = get_object_or_404(User, username=text_data_json.get('user').get('username'))
             action = text_data_json.get('action')
             content_text = text_data_json.get('text')
@@ -53,10 +52,10 @@ class EchoConsumer(WebsocketConsumer):
                 content.save()
 
             elif action == MessageTypes.REMOVE_CONTENT:
-                content.delete()
                 response = {
                     'contentDeletedId': content.id
                 }
+                content.delete()
                 self.send_response_message_to_group(response)
                 return
 
