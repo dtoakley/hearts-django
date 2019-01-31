@@ -16,7 +16,7 @@ class EchoConsumer(WebsocketConsumer):
     def connect(self):
         self.document_id = self.scope['url_route']['kwargs']['document_id']
         self.document_group_name = 'document_{}'.format(self.document_id)
-        # Join room group
+
         async_to_sync(self.channel_layer.group_add)(
             self.document_group_name,
             self.channel_name
@@ -27,14 +27,13 @@ class EchoConsumer(WebsocketConsumer):
     def receive(self, text_data):
         try:
             text_data_json = json.loads(text_data)
-            document = get_object_or_404(Document, pk=text_data_json.get('documentId'))
-
+            document = get_object_or_404(Document, pk=self.document_id)
         except KeyError:
             logger.debug('Document does not exist')
             return
 
         try:
-
+            print(text_data_json)
             user = get_object_or_404(User, username=text_data_json.get('user').get('username'))
             action = text_data_json.get('action')
             content_text = text_data_json.get('text')
