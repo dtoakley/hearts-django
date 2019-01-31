@@ -10,7 +10,7 @@ from hearts_core.constants import MessageTypes
 logger = getLogger(__name__)
 
 
-class EchoConsumer(AsyncWebsocketConsumer):
+class HeartsConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         self.document_id = self.scope['url_route']['kwargs']['document_id']
