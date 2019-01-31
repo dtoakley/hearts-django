@@ -104,11 +104,11 @@ REST_FRAMEWORK = {
 ASGI_APPLICATION = 'hearts_core.routing.application'
 
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [config.get('redis', 'url')],
-        }
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [(config.get('redis', 'host'), 6379)],
+        },
     },
 }
 

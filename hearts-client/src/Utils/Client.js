@@ -59,9 +59,7 @@ class Client {
 
     connectWebSocket() {
         const webSocketScheme = window.location.protocol === "https:" ? "wss" : "ws";
-        const webSocketBridge = new WebSocketBridge();
-        webSocketBridge.connect(webSocketScheme + '://' + window.location.hostname + ':8000' + window.location.pathname);
-        return webSocketBridge;
+        return new WebSocket(webSocketScheme + '://' + window.location.hostname + ':8000' + window.location.pathname);
     }
 
 }
