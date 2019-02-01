@@ -11,8 +11,7 @@ class TestContent(object):
     def setup(self):
         self.test_user = User.objects.create()
         self.test_doc = Document.objects.create(title='test', owner=self.test_user)
-        self.test_content = Content.objects.create(
-            document=self.test_doc, author=self.test_user, text='test text', votes=3)
+        self.test_content = Content.objects.create(document=self.test_doc, author=self.test_user, text='test text')
         self.test_vote = Vote.objects.create(content=self.test_content, author=self.test_user)
 
     def test_as_dict_returns_correctly(self):
@@ -21,8 +20,8 @@ class TestContent(object):
                          'document': self.test_doc.title,
                          'author': self.test_content.author.username,
                          'text': self.test_content.text,
-                         'votes': self.test_content.votes,
-                         'created_on': self.test_content.created_on.strftime('%b %d, %Y')}
+                         'votes': [self.test_vote.as_dict()],
+                         'created_on': self.test_content.created_on.strftime('%b %d')}
         # when
         result = self.test_content.as_dict()
 
